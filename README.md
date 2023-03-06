@@ -11,3 +11,7 @@ Capstone project. Rylee, Peter and Zayed
 # Python needs to migrate
 
 ```python manage.py migrate```
+
+# To migrate database
+
+```python manage.py makemigrations main```
