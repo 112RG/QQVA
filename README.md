@@ -8,7 +8,6 @@ Capstone project. Rylee, Peter and Zayed
 
 ```python manage.py runserver```
 
-# If python needs to migrate
-# migrating python stopped me from running the server
+# Python needs to migrate
 
 ```python manage.py migrate```
