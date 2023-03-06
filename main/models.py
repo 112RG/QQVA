@@ -10,7 +10,7 @@ class Users(models.Model):
     def __str__(self):
         return self.user
 
-class name(models.Model):
+class Name(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     complete = models.BooleanField()
