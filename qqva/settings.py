@@ -9,9 +9,8 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +26,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+if 'CODESPACE_NAME' in os.environ:
+    codespace_name = os.getenv("CODESPACE_NAME")
+    codespace_domain = os.getenv("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN")
+    CSRF_TRUSTED_ORIGINS = [
+        f'https://{codespace_name}-8000.{codespace_domain}']
 
 # Application definition
 
@@ -69,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "qqva.wsgi.application"
-
+X_FRAME_OPTIONS = "ALLOW-FROM preview.app.github.dev"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
