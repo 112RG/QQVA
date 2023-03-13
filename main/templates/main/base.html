@@ -1,9 +1,13 @@
 <html>
     <head>
-        <title>QBot Application</title>
+        <!-- block content can be updated and overwritten in page html files-->
+        <title>{% block title %}Qbot Application{% endblock %}</title>
     </head>
 
     <body>
-        <p>Base Template</p>
+        <div id="content", name="content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </body>
 </html>
