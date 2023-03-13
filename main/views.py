@@ -6,24 +6,25 @@ from django.http import HttpResponse
 
 #home page
 def home(response):
-    return HttpResponse("home Page!")
+    # old code - return HttpResponse("home Page!")
+    return render(response, "main/home.html", {})
 
-#home page
+#command page
 def command(response):
     return HttpResponse("Command Log!")
 
-#home page
+#help page
 def help(response):
     return HttpResponse("Help Page!")
 
-#home page
+#admin page
 def admin(response):
     return HttpResponse("Admin Page!")
 
-#home page
+#login page
 def login(response):
     return HttpResponse("Login Page!")
 
-#home page
+#registration page
 def rego(response):
     return HttpResponse("Registration Page!")
