@@ -16,6 +16,6 @@ Capstone project. Rylee, Peter and Zayed
 
 ```python manage.py makemigrations main```
 
-# username and password for django admin page
+# create username and password for django admin page
 
-```admin - password```
+```python manage.py createsuperuser```
