@@ -15,3 +15,7 @@ Capstone project. Rylee, Peter and Zayed
 # when changes have been made to the main folder you need to migrate the changes then ^ again
 
 ```python manage.py makemigrations main```
+
+# username and password for django admin page
+
+```admin - password```
