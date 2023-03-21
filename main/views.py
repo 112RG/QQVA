@@ -11,20 +11,20 @@ def home(response):
 
 #command page
 def command(response):
-    return HttpResponse("Command Log!")
+    return render(response, "main/command.html", {})
 
 #help page
 def help(response):
-    return HttpResponse("Help Page!")
+    return render(response, "main/help.html", {})
 
 #admin page
 def admin(response):
-    return HttpResponse("Admin Page!")
+    return render(response, "main/admin.html", {})
 
 #login page
 def login(response):
-    return HttpResponse("Login Page!")
+    return render(response, "main/login.html", {})
 
 #registration page
 def rego(response):
-    return HttpResponse("Registration Page!")
+    return render(response, "main/rego.html", {})

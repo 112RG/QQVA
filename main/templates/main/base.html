@@ -5,6 +5,19 @@
     </head>
 
     <body>
+        
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">. . .</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="/home/">Home</a>
+                <a href="/help/">help</a>
+                <a href="/command/">command</a>
+                <!-- need to change the admin page -->
+                <a href="/admin/">admin</a>
+                <a href="/login/">login</a>
+                <a href="/rego/">registration</a>
+            </div>
+        </div>
         <div id="content", name="content">
             {% block content %}
             {% endblock %}
