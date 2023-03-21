@@ -5,20 +5,40 @@
     </head>
 
     <body>
-        
-        <div class="dropdown">
-            <button onclick="myFunction()" class="dropbtn">. . .</button>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="/home/">Home</a>
-                <a href="/help/">help</a>
-                <a href="/command/">command</a>
-                <!-- need to change the admin page -->
-                <a href="/admin/">admin</a>
-                <a href="/login/">login</a>
-                <a href="/rego/">registration</a>
-            </div>
+        <style type="text/css">
+            .sidenav {
+                height:100%;
+                width:160px;
+                position: fixed;
+                z-index:1;
+                top:0;
+                left:0;
+                background-color: #111;
+                overflow-x: hidden;
+                padding-top: 20px;
+            }
+        .sidenav a {
+            padding: 6px 8px 6px 16xp;
+            text-decoration: none;
+            font: #818181;
+            font-size: 25px;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+        </style>
+        <div class="sidenav">
+            <a href="/home/">Home</a>
+            <a href="/help/">help</a>
+            <a href="/command/">command log</a>
+            <!-- need to change the admin page -->
+            <a href="/admin/">admin</a>
+            <a href="/login/">login</a>
+            <a href="/rego/">registration</a>
         </div>
-        <div id="content", name="content">
+        <div id="content", name="content", class="main">
             {% block content %}
             {% endblock %}
         </div>
