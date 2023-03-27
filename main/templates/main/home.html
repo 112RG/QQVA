@@ -5,9 +5,77 @@ Home Page
 {% endblock %}
 
 {% block content %}
-<h1>Home Page</h1>
-<pr>
-    testing to see how the template will work in the home page <br>
-    i have also forgotten how the paragraphs work in html
-</pr>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script type="text/javascript"> 
+	  const fftSize = 256;
+  const fftResult = Math.floor(fftSize/2)+1;
+  const enDic = ['down', 'go', 'left', 'no', 'right', 'stop', 'up', 'yes'];
+  let spectroOffset = 0;
+  let modelEn = null;
+  let captureStream = null;
+  let source = null;
+  let analyser = null;
+  let audioCtx = null;
+  let stop = true;
+  const blockSize = 128/4;
+  const maxLength = 11;
+  let silenceCount = 0;
+  let buffer = [];
+  let interval = null;
+  let timeFromLastReco = 0;
+	 async function startAudioCapture()
+  {
+    console.log("startAudioCapture");
+    stop = false;
+    let constraints = {audio: {channelCount:1, echoCancellation:true, noiseSuppression:true, sampleRate:16000}, video: false};
+    try {
+      captureStream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log("captureStream: ", captureStream);
+      console.log("getAudioTracks: ", captureStream.getAudioTracks());
+      const audio_track = captureStream.getAudioTracks()[0];
+      console.log("Use mic: ", audio_track.label);
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)({"sampleRate":16000});
+      console.log("audioCtx.sampleRate:", audioCtx.sampleRate);
+      analyser = audioCtx.createAnalyser();
+      source = audioCtx.createMediaStreamSource(captureStream);
+      source.connect(analyser);
+      analyser.fftSize = fftSize;
+      analyser.smoothingTimeConstant = 0;
+      console.log("frequencyBinCount: ", analyser.frequencyBinCount)
+      drawSignal();
+      drawSpect();
+      catchDataRec();
+    } catch(err) {
+      console.error("Error: " + err);
+    }
+  }
+	  $(document).ready(function() {
+    	$("#stopAudioCapture").click(function() {
+    	  console.log("stopAudioCapture");
+    	stop=true;
+    	//clearInterval(interval);
+    	if(audioCtx!=null) audioCtx.close();
+    	if(captureStream!=null) captureStream.getAudioTracks().forEach(function(track) {if (track.readyState == 'live') {track.stop();}});
+    	});
+			$("#startAudioCapture").click(function() {
+    	  console.log("startAudioCapture");
+				startAudioCapture()
+    	//  stop=true;
+    	//  clearInterval(interval);
+    	//  if(audioCtx!=null) audioCtx.close();
+    	//  if(captureStream!=null) captureStream.getAudioTracks().forEach(function(track) {if (track.readyState == 'live') {track.stop();}});
+    	});
+		});
+
+</script>
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>QQVA</h1>
+    <div class="align-center">
+      <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a>
+      <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
