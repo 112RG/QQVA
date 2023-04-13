@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "crispy_forms",
+    "crispy_bootstrap4",
     "main.apps.MainConfig",
     "register.apps.RegisterConfig",
-    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -129,5 +130,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 #crispyforms layout
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
 CRISPY_TEMPLATE_PACK="bootstrap4"
