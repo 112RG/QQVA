@@ -19,3 +19,7 @@ Capstone project. Rylee, Peter and Zayed
 # create username and password for django admin page
 
 ```python manage.py createsuperuser```
+
+# install crispyforms for easy styling
+
+```pip install django-crispy-forms```
