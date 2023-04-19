@@ -20,11 +20,3 @@ def help(response):
 #admin page
 def admin(response):
     return render(response, "main/admin.html", {})
-
-#login page
-def login(response):
-    return render(response, "main/login.html", {})
-
-#registration page
-def rego(response):
-    return render(response, "main/rego.html", {})
