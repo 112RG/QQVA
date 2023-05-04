@@ -2,7 +2,7 @@
 Capstone project. Rylee, Peter and Zayed
 
 # install reqs first
-```pip install -r requirments.txt```
+```pip install -r requirements.txt```
 
 # Startup development
 
