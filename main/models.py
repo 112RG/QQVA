@@ -2,8 +2,8 @@ from django.db import models
 
 class Users(models.Model):
     id = models.UUIDField(primary_key=True, null=False)
-    user_name = models.CharField(max_length=20, null=False)
-    reg_date = models.TimeField()
+    user_name = models.CharField(max_length=20, null=False, default="")
+    reg_date = models.TimeField(null=True)
     is_admin = models.BooleanField(default=False)
 
 class VoiceFingerprint(models.Model):
