@@ -8,6 +8,10 @@ Capstone project. Rylee, Peter and Zayed
 
 ```python manage.py runserver```
 
+# Start server WITH websocket server
+
+```daphne -p 8000 qqva.asgi:application```
+
 # Python needs to migrate
 
 ```python manage.py migrate```
