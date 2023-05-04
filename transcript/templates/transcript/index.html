@@ -4,7 +4,7 @@
   navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
     const mediaRecorder = new MediaRecorder(stream)
   })
-	const socket = new WebSocket('ws://localhost:8000/listen')
+	const socket = new WebSocket('ws://127.0.0.1:8000/voice/listen')
 	  socket.onopen = () => {
     document.querySelector('#status').textContent = 'Connected'
     console.log({
