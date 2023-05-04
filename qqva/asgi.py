@@ -17,6 +17,5 @@ application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": URLRouter(
         transcript.routing.websocket_urlpatterns
-
     ),
 })

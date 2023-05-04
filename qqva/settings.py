@@ -77,7 +77,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "qqva.wsgi.application"
 X_FRAME_OPTIONS = "ALLOW-FROM preview.app.github.dev"
 
 # Database
@@ -139,4 +138,4 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "/"
-ASGI_APPLICATION = 'stream.asgi.application'
+ASGI_APPLICATION = 'qqva.asgi.application'
