@@ -1,8 +1,8 @@
 # QQVA
 Capstone project. Rylee, Peter and Zayed
 
-# install django first
-```pip install django```
+# install reqs first
+```pip install -r requirments.txt```
 
 # Startup development
 
