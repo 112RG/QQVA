@@ -22,4 +22,5 @@ urlpatterns = [
     path("", include("main.urls")),
     path("register/", v.register, name="register"),
     path('', include("django.contrib.auth.urls")),
+    path('voice/', include('transcript.urls'))
 ]
