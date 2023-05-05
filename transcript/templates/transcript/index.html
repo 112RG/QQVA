@@ -9,45 +9,52 @@
         <p id="transcript"></p>
        
         <script>
-           navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-            if (!MediaRecorder.isTypeSupported('audio/webm'))
-                return alert('Browser not supported')
+(async () => {
+const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+const mediaRecorder = new MediaRecorder(mediaStream);
+const recordedChunks = [];
+const socket = new WebSocket('ws://localhost:8000/listen')
 
-            const mediaRecorder = new MediaRecorder(stream, {
-                mimeType: 'audio/webm',
-            })
-
-            const socket = new WebSocket('ws://localhost:8000/listen')
-
-            socket.onopen = () => {
-                document.querySelector('#status').textContent = 'Connected'
-                console.log({ event: 'onopen' })
-                mediaRecorder.addEventListener('dataavailable', async (event) => {
-                    if (event.data.size > 0 && socket.readyState == 1) {
-                        socket.send(event.data)
-                    }
-            })
-            mediaRecorder.start(250)
+socket.onopen = () => {
+          document.querySelector('#status').textContent = 'Connected'
+          console.log({ event: 'onopen' })
+          mediaRecorder.addEventListener('dataavailable', async (event) => {
+            if (event.data.size > 0 && socket.readyState == 1) {
+                //socket.send(event.data)
+                recordedChunks.push(event.data);
             }
+          })
+        }
+        mediaRecorder.start();
 
-            socket.onmessage = (message) => {
-                const received = message.data
-                if (received) {
-                    console.log(received)
-                    document.querySelector('#transcript').textContent += ' ' + received
-                }
-           }
-
-           socket.onclose = () => {
-            console.log({ event: 'onclose' })
+setTimeout(() => {
+  mediaRecorder.stop();
+}, 2000);
+        socket.onmessage = (message) => {
+          const received = message.data
+          if (received) {
+              console.log(received)
+              document.querySelector('#transcript').textContent += ' ' + received
+          }
         }
 
-            socket.onerror = (error) => {
-                console.log({ event: 'onerror', error })
-            }
+        socket.onclose = () => {
+          console.log({ event: 'onclose' })
+        }
 
-           })
+        socket.onerror = (error) => {
+            console.log({ event: 'onerror', error })
+        }
 
+ mediaRecorder.addEventListener('stop', () => {
+  console.log("Sending data")
+  const recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+  console.log(recordedBlob)
+  socket.send(recordedBlob)
+});
+
+
+})();
         </script>
     </body>
 </html>

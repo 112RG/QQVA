@@ -1,8 +1,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from typing import Dict
-import json
+import os
+from pydub import AudioSegment
+import speech_recognition as sr
 class TranscriptConsumer(AsyncWebsocketConsumer):
-   #dg_client = Deepgram("9cdc560703b1bf16b0667a256a7626e927005e4a")
 
     async def connect(self):
         await self.accept()
@@ -10,15 +10,28 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         pass
 
-    async def receive(self, text_data):
-        #r = sr.Recognizer()
-        #audio_data = sr.AudioData(text_data, sample_rate=16000, channels=1)
-        #try:
-        #    text = r.recognize_google(audio_data)
-        #except sr.UnknownValueError:
-        #    text = "Could not recognize speech"
-        #except sr.RequestError:
-        #    text = "Could not connect to speech recognition service"
-        await self.send(text_data=json.dumps({
-            'text': "test"
-        }))
+    async def receive(self, text_data=None, bytes_data=None):
+      os.remove("audio.webm")
+      os.remove("recording.wav")
+
+      if bytes_data:
+        print(bytes_data)
+        with open('audio.webm', 'ab') as f:
+          f.write(bytes_data)
+        webm_audio = AudioSegment.from_ogg("audio.webm")
+
+        # Convert the WebM file to a WAV file
+        webm_audio.export("recording.wav", format="wav")
+
+        # Load the WAV file into a speech recognizer
+        r = sr.Recognizer()
+        with sr.AudioFile("recording.wav") as source:
+            audio_data = r.record(source)
+        try:
+            print("You said " + r.recognize_sphinx(audio_data))
+            text = r.recognize_sphinx(audio_data)
+        except sr.UnknownValueError:
+            text = "Could not recognize speech"
+        except sr.RequestError:
+            text = "Could not connect to speech recognition service"
+        await self.send(text_data=text)
