@@ -35,6 +35,7 @@ if 'CODESPACE_NAME' in os.environ:
 # Application definition
 
 INSTALLED_APPS = [
+    "main",
     "channels",
     "transcript",
     "django.contrib.admin",
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "crispy_bootstrap4",
-    "main.apps.MainConfig",
     "register.apps.RegisterConfig",
 ]
 
