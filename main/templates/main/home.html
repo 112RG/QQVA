@@ -6,7 +6,7 @@ Home Page
 
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script type="text/javascript"> 
+<!-- <script type="text/javascript"> 
 	  const fftSize = 256;
   const fftResult = Math.floor(fftSize/2)+1;
   const enDic = ['down', 'go', 'left', 'no', 'right', 'stop', 'up', 'yes'];
@@ -67,12 +67,73 @@ Home Page
     	});
 		});
 
+</script> -->
+
+
+<script>
+(async () => {
+const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+const mediaRecorder = new MediaRecorder(mediaStream);
+let recordedChunks = [];
+const socket = new WebSocket('ws://localhost:8000/listen')
+
+socket.onopen = () => {
+  document.querySelector('#status').textContent = 'Connected'
+  console.log({ event: 'onopen' })
+  mediaRecorder.addEventListener('dataavailable', async (event) => {
+    if (event.data.size > 0 && socket.readyState == 1) {
+        //socket.send(event.data)
+        recordedChunks.push(event.data);
+    }
+  })
+}
+
+$(document).ready(function() {
+    	$("#stopAudioCapture").click(function() {
+    	  console.log("stopAudioCapture");
+        mediaRecorder.stop();
+    	});
+			$("#startAudioCapture").click(function() {
+        recordedChunks = [];
+    	  console.log("startAudioCapture");
+				mediaRecorder.start();
+    	});
+		});
+
+socket.onmessage = (message) => {
+  const received = message.data
+  if (received) {
+      console.log(received)
+      document.querySelector('#transcript').textContent = "Command sent: " +received
+  }
+}
+
+socket.onclose = () => {
+  console.log({ event: 'onclose' })
+}
+
+socket.onerror = (error) => {
+    console.log({ event: 'onerror', error })
+}
+
+mediaRecorder.addEventListener('stop', () => {
+console.log("Sending data")
+const recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+console.log(recordedBlob)
+socket.send(recordedBlob)
+});
+
+
+})();
 </script>
 
 <div class="container">
   <div class="jumbotron">
     <h1>QQVA</h1>
     <div class="align-center">
+      
+      <p id="status">Connection status will go here</p>
+      <p id="transcript"></p>
       <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a>
       <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a>
     </div>
