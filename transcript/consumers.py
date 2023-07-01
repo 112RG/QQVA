@@ -48,6 +48,8 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         matcher = CommandMatcher()
         result = matcher.match(text)
         # Log the matched command
+        print(f"Matched Command: {result[0]}")
+        print(f"Sub-Command: {result[1]}")
         Command = apps.get_model('main', 'Command')
         command = Command(command=f"[{result[0]} sub_command: {result[1]}]")
         await command.asave()
@@ -62,7 +64,13 @@ class CommandMatcher:
     def __init__(self):
         self.commands = ['forward', 'backward', 'stop', 'left', 'right', 'follow']
         self.colors = ['red', 'green', 'black']
+        
     def convert_to_number(self, string):
+        """
+        Helper method that attempts to convert a string into a number.
+        It removes non-digit characters from the string and tries to convert the cleaned string to a float.
+        If the conversion succeeds, the resulting number is returned; otherwise, it returns None.
+        """
         try:
             # Remove special characters and whitespace from the string
             cleaned_string = ''.join(char for char in string if char.isdigit() or char in ['.', '-'])
@@ -73,6 +81,11 @@ class CommandMatcher:
             # Return None if the conversion fails
             return None
     def distance_match(self, string):
+        """
+        Matches the second word of the input string as a distance value.
+        Calls the `convert_to_number()` method to convert the second word to a number.
+        If the conversion is successful, the distance value is returned; otherwise, None is returned.
+        """
         print(f"Second word: {string}")
         distance = self.convert_to_number(string) 
         if distance is not None:
@@ -81,6 +94,10 @@ class CommandMatcher:
         else:
             return None
     def color_match(self,word):
+        """
+        Matches a given word against the color keywords in the `colors` list using Levenshtein distance.
+        Calculates the distance between the word and each color keyword and returns the color with the smallest distance.
+        """
         distances = {}
 
         for color in self.colors:
@@ -92,6 +109,14 @@ class CommandMatcher:
             print(f"Color: {distance[0]}, Levenshtein Distance: {distance[1]}")
         return sorted_distances[0][0]
     def match(self, string):
+        """
+        Performs the command matching and additional operations based on the matched command.
+        Splits the input string into words and extracts the first word as the command keyword.
+        Calculates the Levenshtein distance between the first word and each command keyword in the `commands` list.
+        The command with the smallest distance is considered the matched command.
+        If the matched command requires additional matching or operations, the respective methods are called.
+        The matched command and any sub-command (distance value or color) are returned.
+        """
         words = string.split()
         if words:
             first_word = words[0].lower()
@@ -133,5 +158,4 @@ class CommandMatcher:
             sub_command = self.color_match(words[1])
             # Do something for 'right' command
             pass
-        print(f"Command: {matched_command} sub_command: {sub_command}")
         return matched_command, sub_command
