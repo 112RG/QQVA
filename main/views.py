@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from .models import Command
 # Create your views here.
 # pg - creating 6 views one for each page, related to urls.py
 
@@ -11,7 +11,8 @@ def home(response):
 
 #command page
 def command(response):
-    return render(response, "main/command.html", {})
+    rows = Command.objects.all().order_by('-command_time')
+    return render(response, "main/command.html", {'rows': rows})
 
 #help page
 def help(response):
