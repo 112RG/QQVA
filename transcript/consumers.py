@@ -47,7 +47,6 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         # Perform command matching based on the recognized text
         matcher = CommandMatcher()
         result = matcher.match(text)
-        print
         # Log the matched command
         Command = apps.get_model('main', 'Command')
         command = Command(command=f"[{result[0]} sub_command: {result[1]}]")
