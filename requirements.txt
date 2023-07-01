@@ -5,3 +5,4 @@ django-crispy-forms==2.0
 crispy-bootstrap4==2022.1
 daphne==4.0.0
 SpeechRecognition==3.10.0
+python-Levenshtein==0.21.1
