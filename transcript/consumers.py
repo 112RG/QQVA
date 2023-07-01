@@ -8,6 +8,8 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # This is your Project Roo
 from django.apps import apps
 from asgiref.sync import async_to_sync
 import Levenshtein
+import socket
+import json
 # Class to get audio from web page and convert it to text then return it to the page. Also will log commands
 class TranscriptConsumer(AsyncWebsocketConsumer):
 
@@ -55,7 +57,9 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         await command.asave()
 
         # Send to matlab
-
+        text_sender = TcpTextSender("localhost", 8080)
+        message = {"command": result[0], "sub_command": result[1]}
+        text_sender.send_text(json.dumps(message))
 
         # Return to client
         await self.send(text_data=f"Command: {result[0]} sub_command {result[1]}")
@@ -159,3 +163,19 @@ class CommandMatcher:
             # Do something for 'right' command
             pass
         return matched_command, sub_command
+class TcpTextSender:
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+
+    def send_text(self, message):
+        """
+        Sends a text message over a TCP connection to the specified host and port.
+        """
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.connect((self.host, self.port))
+                sock.sendall(message.encode())
+                print("Text message sent successfully.")
+        except (socket.error, socket.timeout) as e:
+            print(f"An error occurred while sending the text message: {e}")
