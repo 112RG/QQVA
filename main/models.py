@@ -15,5 +15,5 @@ class VoiceFingerprint(models.Model):
 class Command(models.Model):
     command_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     id = models.ForeignKey("Users", on_delete=models.CASCADE, null=True)
-    command_time = models.TimeField(auto_now=False, auto_now_add=True)
+    command_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     command = models.CharField(max_length=20, null=False, default="")
