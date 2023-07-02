@@ -1,5 +1,5 @@
 # QQVA
-Capstone project. Rylee, Peter and Zayed
+Capstone project. Rylee and Peter
 
 # install reqs first
 ```pip install -r requirements.txt```
