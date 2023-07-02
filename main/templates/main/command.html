@@ -5,8 +5,24 @@ Home Page
 {% endblock %}
 
 {% block content %}
-<div class="title-container"><h1>Command Log</h1></div>
-<pr>
-    Command
-</pr>
+<h1>Command Log</h1>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Command</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+        <tr>
+          <td>{{ row.command_id }}</td>
+          <td>{{ row.command }}</td>
+          <td>{{ row.command_time }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
