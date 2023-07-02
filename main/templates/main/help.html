@@ -5,24 +5,83 @@ Help Page
 {% endblock %}
 
 {% block content %}
-<h1>Help Page</h1>
+<div class="title-container"><h1>Help Page</h1></div>
 
-<table>
-    <tr>
-        <th>first command</th>
-        <td>explanation of command</td>
-    </tr>
-    <tr>
-        <th>second command</th>
-        <td>explanation of command</td>
-    </tr>
-    <tr>
-        <th>third command</th>
-        <td>explanation of command</td>
-    </tr>
-    <tr>
-        <th>fourth command</th>
-        <td>explanation of command</td>
-    </tr>
-</table>
+<style>
+  .grid-lines .row > div[class^="col-"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+</style>
+
+<div class="container grid-lines">
+  <div class="row">
+    <div class="col-auto">
+      <h1>Forward</h1>
+    </div>
+    <div class="col-12">
+      <p class="w-100">The forward command will be used to prompt Qbot to move forward a "certain distance" based on the number the user has prompted. 
+        <h6>example - "Hey Qbot forward five" </h6> 
+        - Qbot will recieve forward as the command word and five as the distance to move forward 5 "meters"
+      </p>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container grid-lines">
+  <div class="row">
+    <div class="col-auto">
+      <h1>Backward</h1>
+    </div>
+    <div class="col-12">
+      <p class="w-100">The backward command will be used to prompt Qbot to move backward a "certain distance" based on the number the user has prompted.  
+        <h6>example - "Hey Qbot backward 3" </h6> 
+        - Qbot will recieve backward as the command word and three as the distance to move backward 3 "meters"
+      </p>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container grid-lines">
+  <div class="row">
+    <div class="col-auto">
+      <h1>Right</h1>
+    </div>
+    <div class="col-12">
+      <div class="col-12">
+        <p class="w-100">The right command will be used to prompt the Qbot to turn right 90 degrees, this is a manual command to help redirect the Qbot away from walls or other objects and back on its original path. 
+          <h6>example - "Hey Qbot right" </h6> 
+          - Qbot will recieve right as the command word and will complete a 90 degree turn to the right
+        </p>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container grid-lines">
+  <div class="row">
+    <div class="col-auto">
+      <h1>Left</h1>
+    </div>
+    <div class="col-12">
+      <p class="w-100">The left command will be used to prompt the Qbot to turn left 90 degrees, this is a manual command to help redirect the Qbot away from walls or other objects and back on its original path. 
+        <h6>example - "Hey Qbot left" </h6> 
+        - Qbot will recieve left as the command word and will complete a 90 degree turn to the left
+      </p>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container grid-lines">
+  <div class="row">
+    <div class="col-auto">
+      <h1>Follow</h1>
+    </div>
+    <div class="col-12">
+      <p class="w-100">The follow command will be used to prompt the Qbot to follow A colour designated by the user, it requires the command prompt and a colour prompt (Red, Green, Black) to recognise its command. 
+        <h6>example - "Hey Qbot follow red" </h6> 
+        - Qbot will recieve follow as the command prompt and red as the directive, the QBot will follow a red line designed on the floor
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}
