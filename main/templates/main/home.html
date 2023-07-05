@@ -92,11 +92,18 @@ $(document).ready(function() {
     	$("#stopAudioCapture").click(function() {
     	  console.log("stopAudioCapture");
         mediaRecorder.stop();
+        $("#captureStopMsg").show();
     	});
 			$("#startAudioCapture").click(function() {
         recordedChunks = [];
     	  console.log("startAudioCapture");
 				mediaRecorder.start();
+        $("#captureStartMsg").show();
+        setTimeout(function() {
+          console.log("StopAudioCaptureAutomatically");
+          mediaRecorder.stop();
+          $("#captureStopMsg").show();
+        }, 3000);
     	});
 		});
 
@@ -134,8 +141,12 @@ socket.send(recordedBlob)
       
       <p id="status">Connection status will go here</p>
       <p id="transcript"></p>
+      <p id="captureStartMsg" style="display: none;">Audio capture has started</p>
+      <p id="captureStopMsg" style="display: none;">Audio capture has stopped</p>
       <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a>
       <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a>
+
+      
     </div>
   </div>
 </div>
