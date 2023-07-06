@@ -12,6 +12,10 @@ Capstone project. Rylee and Peter
 
 ```daphne -p 8000 qqva.asgi:application```
 
+# start server WITH websocket server on codespaces
+
+```python -m daphne -p 8000 qqva.asgi:application```
+
 # Python needs to migrate
 
 ```python manage.py migrate```
