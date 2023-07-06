@@ -88,7 +88,7 @@ socket.onopen = () => {
   })
 }
 
-$(document).ready(function() {
+/* $(document).ready(function() {
     	$("#stopAudioCapture").mouseup(function() {
     	  console.log("stopAudioCapture");
         mediaRecorder.stop();
@@ -106,7 +106,28 @@ $(document).ready(function() {
           $("#captureMsg").text("");
         }, 5000);
     	});
-		});
+		}); */
+
+  $(document).ready(function() {
+    
+    $("#captureAudio").mousedown(function() {
+      recordedChunks = [];
+      console.log("startAudioCapture");
+      mediaRecorder.start();
+      $("#captureMsg").show();
+      $("#captureMsg").text("Audio capture has started");
+      setTimeout(function() {
+        console.log("StopAudioCapture");
+        mediaRecorder.stop();
+        $("#captureMsg").text("");
+      }, 5000);
+    });
+    $("#captureAudio").mouseup(function() {
+      console.log("stopAudioCapture");
+      mediaRecorder.stop();
+      $("#captureMsg").text("");
+    });
+  });
 
 socket.onmessage = (message) => {
   const received = message.data
@@ -142,8 +163,9 @@ socket.send(recordedBlob)
       
       <p id="status">Connection status will go here</p>
       <p id="transcript"></p>
+      <!-- <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a> -->
       <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a>
-      <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a>
+      <!-- <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a> -->
       <p id="captureMsg" style="display: none;">Audio capture has started</p>
       
     </div>
