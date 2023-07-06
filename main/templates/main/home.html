@@ -89,19 +89,19 @@ socket.onopen = () => {
 }
 
 $(document).ready(function() {
-    	$("#stopAudioCapture").click(function() {
+    	$("#stopAudioCapture").mouseup(function() {
     	  console.log("stopAudioCapture");
         mediaRecorder.stop();
         $("#captureMsg").text("");
     	});
-			$("#startAudioCapture").click(function() {
+			$("#startAudioCapture").mousedown(function() {
         recordedChunks = [];
     	  console.log("startAudioCapture");
 				mediaRecorder.start();
         $("#captureMsg").show();
         $("#captureMsg").text("Audio capture has started");
         setTimeout(function() {
-          console.log("StopAudioCaptureAutomatically");
+          console.log("StopAudioCapture");
           mediaRecorder.stop();
           $("#captureMsg").text("");
         }, 5000);
