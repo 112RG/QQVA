@@ -115,7 +115,7 @@ socket.onopen = () => {
       console.log("startAudioCapture");
       mediaRecorder.start();
       $("#captureMsg").show();
-      $("#captureMsg").text("Audio capture has started");
+      //$("#captureMsg").text("Audio capture has started");
       /* setTimeout(function() {
         console.log("StopAudioCapture");
         mediaRecorder.stop();
@@ -125,7 +125,7 @@ socket.onopen = () => {
     $("#captureAudio").mouseup(function() {
       console.log("stopAudioCapture");
       mediaRecorder.stop();
-      $("#captureMsg").text("");
+      $("#captureMsg").hide();
     });
   });
 
