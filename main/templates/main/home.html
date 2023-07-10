@@ -88,25 +88,7 @@ socket.onopen = () => {
   })
 }
 
-/* $(document).ready(function() {
-    	$("#stopAudioCapture").mouseup(function() {
-    	  console.log("stopAudioCapture");
-        mediaRecorder.stop();
-        $("#captureMsg").text("");
-    	});
-			$("#startAudioCapture").mousedown(function() {
-        recordedChunks = [];
-    	  console.log("startAudioCapture");
-				mediaRecorder.start();
-        $("#captureMsg").show();
-        $("#captureMsg").text("Audio capture has started");
-        setTimeout(function() {
-          console.log("StopAudioCapture");
-          mediaRecorder.stop();
-          $("#captureMsg").text("");
-        }, 5000);
-    	});
-		}); */
+
 
   $(document).ready(function() {
     
@@ -115,12 +97,6 @@ socket.onopen = () => {
       console.log("startAudioCapture");
       mediaRecorder.start();
       $("#captureMsg").show();
-      //$("#captureMsg").text("Audio capture has started");
-      /* setTimeout(function() {
-        console.log("StopAudioCapture");
-        mediaRecorder.stop();
-        $("#captureMsg").text("");
-      }, 5000); */
     });
     $("#captureAudio").mouseup(function() {
       console.log("stopAudioCapture");
@@ -158,17 +134,16 @@ socket.send(recordedBlob)
 
 <div class="container">
   <div class="jumbotron">
-    <h1>QQVA</h1>
-    <div class="align-center">
+    <h1 class="text-center">QQVA</h1>
+    <div class="text-center">
       
-      <p id="status">Connection status will go here</p>
+      <a>Status: <a id="status">Connection status will go here</a></a>
       <p id="transcript"></p>
-      <!-- <a id="startAudioCapture" class="btn btn-primary">Capture Microphone</a> -->
-      <a id="captureAudio" class="btn btn-primary">Capture Microphone</a>
-      <!-- <a id="stopAudioCapture" class="btn btn-primary">Stop Capture</a> -->
+      <a id="captureAudio" class="btn btn-primary btn-lg">Capture Microphone</a>
       <p id="captureMsg" style="display: none;">Audio capture has started</p>
       
     </div>
   </div>
 </div>
+
 {% endblock %}
