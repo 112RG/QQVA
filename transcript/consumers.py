@@ -21,9 +21,16 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
       # This is a hack to get the audio correctly loaded into the model so we need to delete the files before we process voice again or will it will still have the audio bytes from last time
-      os.remove("audio.webm")
-      os.remove("recording.wav")
+      try:
+          os.remove("audio.webm")
+          os.remove("recording.wav")
+          print("Files removed successfully.")
+      except OSError as e:
+          print(f"Error: {e.filename} - {e.strerror}.")
+      except Exception as e:
+          print(f"An error occurred: {str(e)}")
 
+          
       if bytes_data:
         with open('audio.webm', 'ab') as f:
           f.write(bytes_data)
