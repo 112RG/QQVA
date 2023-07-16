@@ -1,5 +1,4 @@
 channels==4.0.0
-deepgram_sdk==2.4.0
 Django==4.2
 django-crispy-forms==2.0
 crispy-bootstrap4==2022.1
