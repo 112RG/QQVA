@@ -16,8 +16,7 @@ Help Page
 <br>
 <br>
 <h2 class="title-container">Commands</h2>
-<br>
-<div class="container grid-lines">
+<!--<div class="container grid-lines">
   <div class="row">
     <div class="col-auto">
       <h3>Forward</h3>
@@ -86,7 +85,116 @@ Help Page
       </p>
     </div>
   </div>
-</div>
+</div> -->
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          Forward
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        The forward command will be used to prompt Qbot to move forward a "certain distance" based on the number the user has prompted. 
+        <h6>example - "Hey Qbot forward five" </h6> 
+        - Qbot will recieve forward as the command word and five as the distance to move forward 5 "meters"
+      </div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Backward
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        The backward command will be used to prompt Qbot to move backward a "certain distance" based on the number the user has prompted.  
+        <h6>example - "Hey Qbot backward 3" </h6> 
+        - Qbot will recieve backward as the command word and three as the distance to move backward 3 "meters"
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Right
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+        The right command will be used to prompt the Qbot to turn right 90 degrees, this is a manual command to help redirect the Qbot away from walls or other objects and back on its original path. 
+          <h6>example - "Hey Qbot right" </h6> 
+          - Qbot will recieve right as the command word and will complete an ~90 degree turn to the right
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-0">
+        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Left
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+      <div class="card-body">
+        The left command will be used to prompt the Qbot to turn left 90 degrees, this is a manual command to help redirect the Qbot away from walls or other objects and back on its original path. 
+          <h6>example - "Hey Qbot left" </h6> 
+          - Qbot will recieve left as the command word and will complete an ~90 degree turn to the left
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingFive">
+      <h5 class="mb-0">
+        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          follow
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+      <div class="card-body">
+        The follow command will be used to prompt the Qbot to follow A colour designated by the user, it requires the command prompt and a colour prompt (Red, Green, Black) to recognise its command. 
+        <h6>example - "Hey Qbot follow red" </h6> 
+        - Qbot will recieve follow as the command prompt and red as the directive, the QBot will follow a red line designed on the floor
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingSix">
+      <h5 class="mb-0">
+        <button class="btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+          Stop
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+      <div class="card-body">
+        The Stop command will be used to prompt the Qbot to Stopin its tracks thus it is an overriding command to prevent any damage to the robot. 
+        <h6>example - "Hey Qbot stop" </h6> 
+        - Qbot will recieve stop as the command prompt and immediatly stop moving
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more collapsible panels as needed -->
+</div>
 {% endblock %}
