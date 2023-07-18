@@ -1,6 +1,8 @@
 # QQVA
 Capstone project. Rylee and Peter
 
+PYTHON 3.9
+
 # install reqs first
 ```pip install -r requirements.txt```
 
