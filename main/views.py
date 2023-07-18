@@ -7,6 +7,9 @@ from .models import Command
 #home page
 def home(response):
     # old code - return HttpResponse("home Page!")
+    context = {
+        'image_path': 'images/example.jpg'
+    }
     return render(response, "main/home.html", {})
 
 #command page
