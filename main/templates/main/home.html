@@ -6,135 +6,10 @@ Home Page
 
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<!-- <script type="text/javascript"> 
-	  const fftSize = 256;
-  const fftResult = Math.floor(fftSize/2)+1;
-  const enDic = ['down', 'go', 'left', 'no', 'right', 'stop', 'up', 'yes'];
-  let spectroOffset = 0;
-  let modelEn = null;
-  let captureStream = null;
-  let source = null;
-  let analyser = null;
-  let audioCtx = null;
-  let stop = true;
-  const blockSize = 128/4;
-  const maxLength = 11;
-  let silenceCount = 0;
-  let buffer = [];
-  let interval = null;
-  let timeFromLastReco = 0;
-	 async function startAudioCapture()
-  {
-    console.log("startAudioCapture");
-    stop = false;
-    let constraints = {audio: {channelCount:1, echoCancellation:true, noiseSuppression:true, sampleRate:16000}, video: false};
-    try {
-      captureStream = await navigator.mediaDevices.getUserMedia(constraints);
-      console.log("captureStream: ", captureStream);
-      console.log("getAudioTracks: ", captureStream.getAudioTracks());
-      const audio_track = captureStream.getAudioTracks()[0];
-      console.log("Use mic: ", audio_track.label);
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)({"sampleRate":16000});
-      console.log("audioCtx.sampleRate:", audioCtx.sampleRate);
-      analyser = audioCtx.createAnalyser();
-      source = audioCtx.createMediaStreamSource(captureStream);
-      source.connect(analyser);
-      analyser.fftSize = fftSize;
-      analyser.smoothingTimeConstant = 0;
-      console.log("frequencyBinCount: ", analyser.frequencyBinCount)
-      drawSignal();
-      drawSpect();
-      catchDataRec();
-    } catch(err) {
-      console.error("Error: " + err);
-    }
-  }
-	  $(document).ready(function() {
-    	$("#stopAudioCapture").click(function() {
-    	  console.log("stopAudioCapture");
-    	stop=true;
-    	//clearInterval(interval);
-    	if(audioCtx!=null) audioCtx.close();
-    	if(captureStream!=null) captureStream.getAudioTracks().forEach(function(track) {if (track.readyState == 'live') {track.stop();}});
-    	});
-			$("#startAudioCapture").click(function() {
-    	  console.log("startAudioCapture");
-				startAudioCapture()
-    	//  stop=true;
-    	//  clearInterval(interval);
-    	//  if(audioCtx!=null) audioCtx.close();
-    	//  if(captureStream!=null) captureStream.getAudioTracks().forEach(function(track) {if (track.readyState == 'live') {track.stop();}});
-    	});
-		});
-
-</script> -->
 
 
-<script>
-(async () => {
-const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-const mediaRecorder = new MediaRecorder(mediaStream);
-let recordedChunks = [];
-const socket = new WebSocket('ws://localhost:8000/listen')
-
-socket.onopen = () => {
-  document.querySelector('#status').textContent = 'Connected'
-  console.log({ event: 'onopen' })
-  mediaRecorder.addEventListener('dataavailable', async (event) => {
-    if (event.data.size > 0 && socket.readyState == 1) {
-        //socket.send(event.data)
-        recordedChunks.push(event.data);
-    }
-  })
-}
-
-
-
-  $(document).ready(function() {
-    
-    $("#captureAudio").mousedown(function() {
-      recordedChunks = [];
-      console.log("startAudioCapture");
-      mediaRecorder.start();
-      $("#captureMsg").show();
-    });
-    $("#captureAudio").mouseup(function() {
-      console.log("stopAudioCapture");
-      mediaRecorder.stop();
-      $("#captureMsg").hide();
-    });
-  });
-
-socket.onmessage = (message) => {
-  const received = message.data
-  if (received) {
-      console.log(received)
-      document.querySelector('#transcript').textContent = "Command sent: " +received
-  }
-}
-
-socket.onclose = () => {
-  console.log({ event: 'onclose' })
-}
-
-socket.onerror = (error) => {
-    console.log({ event: 'onerror', error })
-}
-
-mediaRecorder.addEventListener('stop', () => {
-console.log("Sending data")
-const recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-console.log(recordedBlob)
-socket.send(recordedBlob)
-});
-
-
-})();
-</script>
-{% load static %}
-<img src="{% static '/images/QQVA-logos.jpeg' %}" alt="QQVA logo">
-<div class="container" style="width: fit-content;" >
-  <div class="jumbotron">
+<div class="container">
+  <div class="jumbotron" id="jumbo">
     <h1 class="text-center">QQVA</h1>
     <div class="text-center">
       
@@ -142,8 +17,101 @@ socket.send(recordedBlob)
       <p id="transcript"></p>
       <a id="captureAudio" class="btn btn-primary">Capture Microphone</a>
       <p id="captureMsg" style="display: none;">Audio capture has started</p>
+      <div class="spinner" id="spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<style>
+  .jumbotron {
+    position: relative;
+    z-index: 1; /* Adjust the z-index value */
+  }
+  
+  .spinner {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  .jumbotron.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
 
+
+<script>
+  (async () => {
+  const spinner = document.getElementById('spinner');
+  const jumbotron = document.getElementById('jumbo');
+
+  const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const mediaRecorder = new MediaRecorder(mediaStream);
+  let recordedChunks = [];
+  const socket = new WebSocket('ws://localhost:8000/listen')
+  
+  socket.onopen = () => {
+    document.querySelector('#status').textContent = 'Connected'
+    console.log({ event: 'onopen' })
+    mediaRecorder.addEventListener('dataavailable', async (event) => {
+      if (event.data.size > 0 && socket.readyState == 1) {
+          //socket.send(event.data)
+          recordedChunks.push(event.data);
+      }
+    })
+  }
+  
+  
+  
+    $(document).ready(function() {
+      $("#captureAudio").mousedown(function() {
+        recordedChunks = [];
+        console.log("startAudioCapture");
+        mediaRecorder.start();
+        $("#captureMsg").show();
+      });
+      $("#captureAudio").mouseup(function() {
+        console.log("stopAudioCapture");
+        mediaRecorder.stop();
+        $("#captureMsg").hide();
+      });
+    });
+  
+  socket.onmessage = (message) => {
+    const received = message.data
+    if (received) {
+        console.log(received)
+        document.querySelector('#transcript').textContent = "Command sent: " +received
+        spinner.style.display = 'none';
+        jumbotron.classList.remove('disabled');
+    }
+  }
+  
+  socket.onclose = () => {
+    console.log({ event: 'onclose' })
+  }
+  
+  socket.onerror = (error) => {
+      console.log({ event: 'onerror', error })
+  }
+  
+  mediaRecorder.addEventListener('stop', () => {
+  console.log("Sending data")
+  const recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+  console.log(recordedBlob)
+  spinner.style.display = 'block';
+  jumbotron.classList.add('disabled');
+  socket.send(recordedBlob)
+  
+  });
+  
+  
+  })();
+  </script>
 {% endblock %}
