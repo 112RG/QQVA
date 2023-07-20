@@ -2,7 +2,8 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import os
 from pydub import AudioSegment
 import speech_recognition as sr
-import datetime     
+import datetime
+from transcript import command
 from channels.db import database_sync_to_async
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # This is your Project Root
 from django.apps import apps
@@ -12,14 +13,22 @@ import socket
 import json
 # Class to get audio from web page and convert it to text then return it to the page. Also will log commands
 class TranscriptConsumer(AsyncWebsocketConsumer):
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.command_thread = None
     async def connect(self):
+        self.command_thread = command.CommandThread()
+        self.command_thread.start()
         await self.accept()
 
     async def disconnect(self, close_code):
+        if self.command_thread:
+            self.command_thread.stop()
+            self.command_thread.join()
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
+      # Define current dir location for relative path 
       __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
       # This is a hack to get the audio correctly loaded into the model so we need to delete the files before we process voice again or will it will still have the audio bytes from last time
@@ -38,6 +47,7 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         webm_audio = AudioSegment.from_file(os.path.join(__location__, 'audio.webm'), format="ogg")
         # Convert the WebM file to a WAV file
         webm_audio.export("recording.wav", format="wav")
+
         # Load the WAV file into a speech recognizer
         r = sr.Recognizer()
         with sr.AudioFile("recording.wav") as source:
@@ -58,9 +68,8 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         print(f"Matched Command: {result[0]}")
         print(f"Sub-Command: {result[1]}")
         Command = apps.get_model('main', 'Command')
-        command = Command(command=f"[{result[0]} sub_command: {result[1]}]")
-        await command.asave()
-
+        _command = Command(command=f"[{result[0]} sub_command: {result[1]}]")
+        await _command.asave()
         # Send to matlab
         text_sender = TcpTextSender("localhost", 8080)
         message = {"command": result[0], "sub_command": result[1]}
