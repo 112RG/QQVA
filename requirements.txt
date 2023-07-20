@@ -9,6 +9,6 @@ pydub==0.25.1
 keyboard==0.13.5
 numpy==1.23.5
 soundfile==0.12.1
-torch==2.0.1
+
 openai-whisper==20230314
 keyboard==0.13.5
