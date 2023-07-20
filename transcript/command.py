@@ -1,33 +1,5 @@
 import keyboard
 import time
-from threading import Thread
-import time
-
-class CommandThread(Thread):
-    def __init__(self):
-        super().__init__()
-        self.command = None
-        self.is_running = False
-
-    def run(self):
-        self.is_running = True
-        while self.is_running:
-            if self.command is None:
-                time.sleep(1)  # Wait for a command to be set
-            else:
-                if self.command.get('command') == 'stop':
-                    self.stop()
-                else:
-                    CommandPlayer().play_command(self.command)
-                    self.command = None  # Reset the command once executed
-
-    def stop(self):
-        self.is_running = False
-
-    def set_command(self, command):
-        self.command = command
-
-
 
 class CommandPlayer:
     def __init__(self):
@@ -87,9 +59,9 @@ class CommandPlayer:
         print('Pressing go')
         # Implement the appropriate go action, such as pressing a specific key
 
-""" # Example usage
+# Example usage
 command_server = CommandPlayer()
 
 # Simulating receiving a command
 command = {'command': 'forward', 'sub_command': 20}
-command_server.play_command(command) """
+command_server.play_command(command)
