@@ -7,13 +7,15 @@ Home Page
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
-
-<img src="https://i.imgur.com/hOyQZa1.jpg" style="height:100px;width:100px" alt="My image">
 <div class="container">
   <div class="jumbotron" id="jumbo">
+    <div class="logo">
+      <img src="https://i.imgur.com/hOyQZa1.jpg" style="height:290px;width:250px;" alt="QQVA Logo">
+    </div>
     <h1 class="text-center">QQVA</h1>
     <div class="text-center">
       
+      <p>Keep the button pressed down<br>as you issue the command</p>
       <a>Status: <a id="status">Connection status will go here</a></a>
       <p id="transcript"></p>
       <a id="captureAudio" class="btn btn-primary">Capture Microphone</a>
@@ -29,6 +31,9 @@ Home Page
 <style>
   .jumbotron {
     position: relative;
+    width: fit-content;
+    border: 3px solid;
+    background-color: rgb(229, 229, 229);
     z-index: 1; /* Adjust the z-index value */
   }
   
@@ -40,12 +45,19 @@ Home Page
     transform: translate(-50%, -50%);
     z-index: 9999;
   }
+
   .jumbotron.disabled {
     opacity: 0.5;
     pointer-events: none;
   }
-</style>
 
+  .logo {
+    /* border: 3px solid; */
+    width: fit-content;
+    position: relative;
+    left: 0%;
+  }
+</style>
 
 <script>
   (async () => {
