@@ -43,8 +43,8 @@ class CommandThread(Thread):
 
 class CommandPlayer:
     commands = {
-        'forward': lambda sub_command: CommandPlayer.press_key('up', sub_command),
-        'backward': lambda sub_command: CommandPlayer.press_key('down', sub_command),
+        'forward': lambda sub_command: CommandPlayer.press_forward(sub_command),
+        'backward': lambda sub_command: CommandPlayer.press_backward(sub_command),
         'left': lambda _: CommandPlayer.press_key('left'),
         'right': lambda _: CommandPlayer.press_key('right'),
         'stop': lambda _: CommandPlayer.release_keys(),
@@ -52,12 +52,9 @@ class CommandPlayer:
     }
 
     @staticmethod
-    def press_key(key, duration=None):
-        print(f'Pressing {key} for {duration} seconds')
+    def press_key(key):
         keyboard.press(key)
-        if duration:
-            time.sleep(duration)
-            keyboard.release(key)
+        keyboard.release(key)
 
     @staticmethod
     def release_keys():
@@ -66,6 +63,20 @@ class CommandPlayer:
         keyboard.release('down')
         keyboard.release('left')
         keyboard.release('right')
+
+    @staticmethod
+    def press_forward(sub_command):
+        print(f'Pressing forward for {sub_command} seconds')
+        keyboard.press('up')
+        time.sleep(sub_command)
+        keyboard.release('up')
+
+    @staticmethod
+    def press_backward(sub_command):
+        print(f'Pressing backward for {sub_command} seconds')
+        keyboard.press('down')
+        time.sleep(sub_command)
+        keyboard.release('down')
 
 
 # Example usage
@@ -76,10 +87,12 @@ command_thread.start()
 command1 = {'command': 'forward', 'sub_command': 5}
 command_thread.set_command(command1)
 
-time.sleep(0.1)
+time.sleep(2)  # Wait for a moment (simulate other commands being received)
+
 command2 = {'command': 'backward', 'sub_command': 3}
 command_thread.set_command(command2)
 
+time.sleep(2)  # Wait for a moment (simulate other commands being received)
 
 # Stop the command thread
 command_stop = {'command': 'stop'}
