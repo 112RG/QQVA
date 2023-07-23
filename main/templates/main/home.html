@@ -87,6 +87,17 @@ Home Page
         mediaRecorder.stop();
         $("#captureMsg").hide();
       });
+
+      $("#captureAudio").bind('touchstart', function(){
+        recordedChunks = [];
+        console.log("startAudioCapture");
+        mediaRecorder.start();
+        $("#captureMsg").show();
+      }).bind('touchend', function(){
+        console.log("stopAudioCapture");
+        mediaRecorder.stop();
+        $("#captureMsg").hide();
+      });
     });
   
   socket.onmessage = (message) => {
