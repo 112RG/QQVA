@@ -80,7 +80,7 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
         text_sender = TcpTextSender("localhost", 8080)
         message = {"command": result[0], "sub_command": result[1]}
         text_sender.send_text(json.dumps(message))
-        self.command_thread.command = message
+        self.command_thread.enqueue_command(message)
         # Return to client  
         await self.send(text_data=f"Command: {result[0]} sub_command {result[1]}")
 

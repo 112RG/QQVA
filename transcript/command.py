@@ -8,7 +8,9 @@ class CommandThread(Thread):
         super().__init__()
         self.command = None
         self._command = None
+        self.command_queue = []
         self.is_running = False
+        self.stop_command = False
         self.commands = {
             'forward': self.press_forward,
             'backward': self.press_backward,
@@ -22,19 +24,19 @@ class CommandThread(Thread):
     def run(self):
         self.is_running = True
         while self.is_running:
-            print('Running command thread')
-            if self.command is None:
-                time.sleep(1)  # Wait for a command to be set
-            else:
-                print('Running command')
-                self.play_command(self.command)
-                self.command = None  # Reset the command once executed
-
+            with self.queue_lock:
+                if self.command_queue:
+                    command = self.command_queue.pop(0)
+                    self.play_command(command)
     def stop(self):
         self.is_running = False
 
-    def set_command(self, command):
-        self._command = command
+    def enqueue_command(self, command):
+        if command.get('command') == 'stop':
+            self.stop_command = True;
+            return;
+        with self.queue_lock:
+            self.command_queue.append(command)
 
     def play_command(self, command):
         if 'command' not in command:
@@ -58,8 +60,9 @@ class CommandThread(Thread):
         keyboard.press('up')
         start_time = time.time()
         while time.time() - start_time < sub_command:
-            if self.command.get('command') == 'stop':
+            if self.stop_command:
                 print("relesing")
+                self.stop_command = False
                 break
                 ("pressing")
             time.sleep(0.1)
@@ -70,8 +73,9 @@ class CommandThread(Thread):
         keyboard.press('down')
         start_time = time.time()
         while time.time() - start_time < sub_command:
-            if self.command.get('command') == 'stop':
+            if self.stop_command:
                 print("relesing")
+                self.stop_command = False
                 break
                 ("pressing")
             time.sleep(0.1)
@@ -81,8 +85,9 @@ class CommandThread(Thread):
         keyboard.press('left')
         start_time = time.time()
         while time.time() - start_time < sub_command:
-            if self.command.get('command') == 'stop':
+            if self.stop_command:
                 print("relesing")
+                self.stop_command = False
                 break
                 ("pressing")
             time.sleep(0.1)
@@ -90,13 +95,27 @@ class CommandThread(Thread):
     def press_left(self, _):
         print('Pressing left')
         keyboard.press('left')
-        time.sleep(2)
+        start_time = time.time()
+        while time.time() - start_time < 2:
+            if self.stop_command:
+                print("relesing")
+                self.stop_command = False
+                break
+                ("pressing")
+            time.sleep(0.1)
         keyboard.release('left')
 
     def press_right(self, _):
         print('Pressing right')
         keyboard.press('right')
-        time.sleep(2)
+        start_time = time.time()
+        while time.time() - start_time < 2:
+            if self.stop_command:
+                print("relesing")
+                self.stop_command = False
+                break
+                ("pressing")
+            time.sleep(0.1)
         keyboard.release('right')
 
     def press_stop(self, _):
