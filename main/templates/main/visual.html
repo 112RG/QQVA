@@ -11,13 +11,21 @@ Help Page
 
 <div class="container">
     <div class="jumbotron" id="jumbo">
+        {% load static %}
+        <img class="mx-auto d-block img-fluid unlock-icon" src="{% static 'example.jpg' %}" style="height:290px;width:250px;" alt="QQVA Logo"/>
+        <h1 class="text-center">Visual Command Builder</h1>
         <div class="text-center">
-            <div><textarea id="command" rows="10" cols="20" style="height:100%;" readonly></textarea></div>
+            <div><textarea id="command_text" rows="11" cols="20" style="height:100%;" readonly></textarea></div>
             <a id="up" class="btn btn-primary">Up</a>
             <a id="down" class="btn btn-primary">Down</a>
             <a id="left" class="btn btn-primary">Left</a>
             <a id="right" class="btn btn-primary">Right</a>
             <a id="spin" class="btn btn-primary">Spin</a>
+        </div>
+        <br>
+        <br>
+        <div class="text-center">
+            <a id="send_command" class="btn btn-primary">Send</a>
         </div>
     </div>
 </div>

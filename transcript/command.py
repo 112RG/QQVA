@@ -24,19 +24,34 @@ class CommandThread(Thread):
     def run(self):
         self.is_running = True
         while self.is_running:
-            with self.queue_lock:
+                print("Command thread running")
+                print(f"Command queue: {self.command_queue}")
                 if self.command_queue:
                     command = self.command_queue.pop(0)
-                    self.play_command(command)
+                    print(f"Command thread: {command}")
+                    #self.play_command(command)
+                    self.test_play()
+                time.sleep(0.5)
+    def test_play(self):
+        print("Test play: Running test play")
+        start_time = time.time()
+        while time.time() - start_time < 3:
+            if self.stop_command:
+                print("Test play: got stop")
+                self.stop_command = False
+                break
+        print("Test play: command done")
+
     def stop(self):
         self.is_running = False
 
     def enqueue_command(self, command):
         if command.get('command') == 'stop':
             self.stop_command = True;
+            if command.get('sub_command') == 'all':
+                self.command_queue = []
             return;
-        with self.queue_lock:
-            self.command_queue.append(command)
+        self.command_queue.append(command)
 
     def play_command(self, command):
         if 'command' not in command:

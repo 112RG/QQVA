@@ -38,15 +38,22 @@ class TranscriptConsumer(AsyncWebsocketConsumer):
       __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
       # This is a hack to get the audio correctly loaded into the model so we need to delete the files before we process voice again or will it will still have the audio bytes from last time
-      try:
+      if text_data:
+          commands = json.loads(text_data)
+          print(commands)
+          for command in commands['commands']:
+              self.command_thread.enqueue_command(command)
+              print(command)
+      if bytes_data:
+        try:
           os.remove(os.path.join(__location__, 'audio.webm'))
           os.remove(os.path.join(__location__, 'recording2.wav'))
           print("Files removed successfully.")
-      except OSError as e:
-          print(f"Error: {e.filename} - {e.strerror}.")
-      except Exception as e:
-          print(f"An error occurred: {str(e)}")
-      if bytes_data:
+        except OSError as e:
+             print(f"Error: {e.filename} - {e.strerror}.")
+        except Exception as e:
+             print(f"An error occurred: {str(e)}")
+
         with open(os.path.join(__location__, 'audio.webm'), 'ab') as f:
           f.write(bytes_data)
         # Save byts as webm file in ogg codec
