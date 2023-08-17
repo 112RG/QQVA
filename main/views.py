@@ -16,7 +16,9 @@ def home(response):
 def command(response):
     rows = Command.objects.all().order_by('-command_time')
     return render(response, "main/command.html", {'rows': rows})
-
+#visual page
+def visual(response):
+    return render(response, "main/visual.html", {})
 #help page
 def help(response):
     return render(response, "main/help.html", {})

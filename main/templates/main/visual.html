@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Help Page
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<script src="{% static 'jquery-3.5.1.slim.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'visual.js' %}" crossorigin="anonymous"></script>
+
+<div class="container">
+    <div class="jumbotron" id="jumbo">
+        <div class="text-center">
+            <div><textarea id="command" rows="10" cols="20" style="height:100%;" readonly></textarea></div>
+            <a id="up" class="btn btn-primary">Up</a>
+            <a id="down" class="btn btn-primary">Down</a>
+            <a id="left" class="btn btn-primary">Left</a>
+            <a id="right" class="btn btn-primary">Right</a>
+            <a id="spin" class="btn btn-primary">Spin</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
